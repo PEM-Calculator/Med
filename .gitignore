@@ -1,0 +1,15 @@
+.cache
+.idea
+.solutions
+.trash
+
+# Composer
+composer.phar
+composer.lock
+vendor/
+
+# Node.js
+node_modules/
+
+# Build
+public/app/
