@@ -12,16 +12,25 @@ require_once(__APP__ . 'api/Api.php');
  */
 try
 {
-	(new Api($di))->handle();
+	$micro = new \Phalcon\Mvc\Micro($di);
+	(new Api($micro))->handle();
 }
 catch (\Throwable $e)
 {
 	// что-то случилось, и ошибка не обработана выше
-	// просто вывожу текст ошибки с стек
+		
+	// пробую сохранить ошибку в БД
+	// если не получится, значит БД не настроена
+	// ошибки в файлы писать не буду
+	$di['errors']->saveException($e);
+	
+	// просто вывожу текст ошибки в стек
 	sendResponse(500, (object)[
+		'class' => get_class($e),
 		'code' => $e->getCode(),
-		'error' => get_class($e) . ': ' . $e->getMessage(),
-		'line' => $e->getFile() . ':' . $e->getLine(),
+		'message' =>  $e->getMessage(),
+		'file' => $e->getFile(),
+		'line' => $e->getLine(),
 		'trace' => $e->getTrace(),
 	]);
 }

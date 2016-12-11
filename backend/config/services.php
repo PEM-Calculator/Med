@@ -33,16 +33,20 @@ $di->set('session', function() {
 	return $session;
 });
 
-$di->set('cookies', function() {
+$di['cookies'] = function() {
 	$cookies = new \Phalcon\Http\Response\Cookies();
 	$cookies->useEncryption(false);
 	return $cookies;
-});
+};
 
 $di['response'] = function() {
 	return new \Phalcon\Http\Response();
 };
 
-$di->set('request', function() {
+$di['request'] = function() {
 	return new \Phalcon\Http\Request();
-});
+};
+
+$di['errors'] = function() {
+	return new \Med\Libraries\Errors();
+};
